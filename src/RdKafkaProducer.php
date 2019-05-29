@@ -133,10 +133,10 @@ class RdKafkaProducer
         if ($obj !== null) {
             return $obj;
         }
-        $brokerLists    = config('kafka.broker-list');
-        $kafkaOptions   = config('kafka.kafka-options');
-        $groupId        = config('kafka.kafka-group_id');
-        $obj            = new RdKafkaProducer($brokerLists, $groupId, $kafkaOptions);
+        $brokerLists = config('kafka.producer.broker_list');
+        $groupId     = config('kafka.producer.group_id');
+        $options     = config('kafka.producer.kafka_options');
+        $obj         = new RdKafkaProducerHelper($brokerLists, $groupId, $options);
         return $obj;
     }
 
@@ -196,7 +196,7 @@ class RdKafkaProducer
         $eventRaw['eventKey'] = $eventKey;
         $key    = '';
         $event  = json_encode($eventRaw);
-        $topicList  = [config('kafka.zntk-topic')];
+        $topicList  = [config('kafka.producer.topic')];
         return self::sendMessage($topicList, $event, $key, $pollTimeMs);
     }
 
