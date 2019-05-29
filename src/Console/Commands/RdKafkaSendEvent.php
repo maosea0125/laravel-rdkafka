@@ -2,9 +2,8 @@
 
 namespace RdKafkaApp\Console\Commands;
 
-use RdKafkaApp\RdKafkaProducer;
-use RdKafkaApp\WorkWechat\Events\Zntk\DhbToQywx;
 use Illuminate\Console\Command;
+use RdKafkaApp\RdKafkaProducer;
 
 /**
  * 智能拓客初始化

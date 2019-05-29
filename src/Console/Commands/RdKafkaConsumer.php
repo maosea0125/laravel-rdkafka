@@ -2,10 +2,9 @@
 
 namespace RdKafkaApp\Console\Commands;
 
+use Illuminate\Console\Command;
 use RdKafkaApp\Exceptions\ConsumerEventConfigNotFoundException;
 use RdKafkaApp\RdKafkaProducer;
-use RdKafkaApp\WorkWechat\Events\EventNameDefine;
-use Illuminate\Console\Command;
 
 class RdKafkaConsumer extends Command
 {
