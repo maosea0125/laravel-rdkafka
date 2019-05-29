@@ -1,4 +1,12 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * Email: 1060656096@qq.com
+ * User: zwei
+ * Date: 2018-08-18
+ * Time: 11:51
+ */
+
 namespace RdKafkaApp;
 
 use RdKafkaApp\Exceptions\AppBaseException;
@@ -7,13 +15,6 @@ use RdKafka\Producer;
 use RdKafka\ProducerTopic;
 use RdKafka\Conf;
 
-/**
- * Created by PhpStorm.
- * Email: 1060656096@qq.com
- * User: zwei
- * Date: 2018-08-18
- * Time: 11:51
- */
 class RdKafkaCallback implements RdKafkaCallbackInterface
 {
     /**

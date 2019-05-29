@@ -1,9 +1,4 @@
 <?php
-namespace RdKafkaApp;
-
-use RdKafka\Producer;
-use RdKafka\ProducerTopic;
-use RdKafka\Conf;
 /**
  * Created by PhpStorm.
  * Email: 1060656096@qq.com
@@ -11,6 +6,13 @@ use RdKafka\Conf;
  * Date: 2018-08-18
  * Time: 11:51
  */
+
+namespace RdKafkaApp;
+
+use RdKafka\Producer;
+use RdKafka\ProducerTopic;
+use RdKafka\Conf;
+
 class RdKafkaProducer
 {
     /**
