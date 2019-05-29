@@ -1,5 +1,5 @@
 <?php
-namespace RdKafkaApp\Helper;
+namespace RdKafkaApp;
 
 use RdKafka\Producer;
 use RdKafka\ProducerTopic;

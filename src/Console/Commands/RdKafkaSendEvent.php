@@ -2,7 +2,7 @@
 
 namespace RdKafkaApp\Console\Commands;
 
-use RdKafkaApp\Helper\RdKafkaProducer;
+use RdKafkaApp\RdKafkaProducer;
 use RdKafkaApp\WorkWechat\Events\Zntk\DhbToQywx;
 use Illuminate\Console\Command;
 

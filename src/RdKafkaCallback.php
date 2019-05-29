@@ -1,5 +1,5 @@
 <?php
-namespace RdKafkaApp\Helper;
+namespace RdKafkaApp;
 
 use RdKafkaApp\Exceptions\AppBaseException;
 use RdKafkaApp\Exceptions\KafkaErrorException;

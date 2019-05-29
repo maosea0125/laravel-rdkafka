@@ -7,7 +7,7 @@
  * Time: 07:59
  */
 
-namespace RdKafkaApp\Helper;
+namespace RdKafkaApp;
 
 use RdKafka\Conf;
 use RdKafka\TopicConf;

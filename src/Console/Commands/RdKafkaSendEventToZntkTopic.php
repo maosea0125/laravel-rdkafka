@@ -66,7 +66,7 @@ str;
 
             $this->prettyError(sprintf($str, $eventKey, $eventRaw['eventKey']));
         }
-        \RdKafkaApp\Helper\RdKafkaProducer::sendEventRaw($eventKey, $eventRaw);
+        \RdKafkaApp\RdKafkaProducer::sendEventRaw($eventKey, $eventRaw);
         $this->prettyInfo("Send Event complete");
     }
 

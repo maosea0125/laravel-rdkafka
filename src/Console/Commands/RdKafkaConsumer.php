@@ -3,7 +3,7 @@
 namespace RdKafkaApp\Console\Commands;
 
 use RdKafkaApp\Exceptions\ConsumerEventConfigNotFoundException;
-use RdKafkaApp\Helper\RdKafkaProducer;
+use RdKafkaApp\RdKafkaProducer;
 use RdKafkaApp\WorkWechat\Events\EventNameDefine;
 use Illuminate\Console\Command;
 
@@ -103,7 +103,7 @@ exception-code: %s
  exception-msg: %s
 %s
 str;
-        $obj        = new \RdKafkaApp\Helper\RdKafkaConsumer($brokerList, $topicList, $this->groupId, $kafkaOptions);
+        $obj        = new \RdKafkaApp\RdKafkaConsumer($brokerList, $topicList, $this->groupId, $kafkaOptions);
         $consumer   = $obj->getConsumer();
         while (true) {
             $message = $consumer->consume($timeoutMs);
