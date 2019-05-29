@@ -12,10 +12,10 @@ use RdKafka\Conf;
 
 /**
  * rdkafka配置
- * Class RdKafkaConfHelper
+ * Class RdKafkaConf
  * @package RdKafkaApp\Helper
  */
-class RdKafkaConfHelper
+class RdKafkaConf
 {
     /**
      * 获取kafka配置
