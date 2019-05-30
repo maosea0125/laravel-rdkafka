@@ -15,6 +15,10 @@ php artisan rdkafka:consumer 消费者id > kafka.log 2>&1 &
 php artisan rdkafka:consumer consumer_client_add > kafka.log 2>&1 &
 ```
 
+#### 消费者日志格式
+
+consumer_id|group_id|topic_name|exception_code|exception_msg|exception_string
+
 ```php
 # 发送事件
 $eventData = [

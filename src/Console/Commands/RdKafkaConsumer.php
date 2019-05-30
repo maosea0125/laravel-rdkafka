@@ -85,52 +85,54 @@ class RdKafkaConsumer extends Command
         $topicList          = $this->clientConfig['topic_list'];
         $timeoutMs          = $this->clientConfig['timeout_ms'];// 单位毫秒
         $kafkaOptions       = $this->clientConfig['kafka_options'];
-        // 异常格式化信息
-        $exceptionFormatStr = <<<str
-    [data: %s]:
-     consumer id: %s
-      group id; %s
-    topic name: %s
-    event name; %s
-     event raw: %s
-exception code: %s
- exception msg: %s
-%s
-str;
+
         $obj        = new \RdKafkaApp\RdKafkaConsumer($brokerList, $topicList, $this->groupId, $kafkaOptions);
         $consumer   = $obj->getConsumer();
         while (true) {
             $message = $consumer->consume($timeoutMs);
             switch ($message->err) {
                 case RD_KAFKA_RESP_ERR_NO_ERROR:
+                    $this->info('new-message: ' . date('Y-m-d H:i:s'));
+
                     $rawEventData = $message->payload;
-                    // 不是事件格式不处理
+
+                    // 消息为空
                     if (empty($rawEventData)) {
+                        $this->info('skip: message is empty');
                         break;
                     }
-                    var_dump("\n\n var_dump-message-payload:",$message->payload, "\n");
+
+                    $this->info('message-payload: ' . $message->payload);
                     $event = json_decode($rawEventData, true);
-                    // 不是事件格式不处理
+                    // 消息格式错误
                     if (!is_array($event)) {
+                        $this->info('skip: message is not an event');
                         break;
                     }
+
                     try {
                         $bool   = $this->executeEvent($event);
+
+                        $this->info('success');
                         // 处理成功
                         if ($bool !== false) {
                             // 事件广播
                             $this->eventBroadcast($event);
                         } else {// 处理失败
                         }
-                    } catch (\Exception $e) {// 异常处理
-                        echo sprintf($exceptionFormatStr, date('Y-m-d H:i:s'), $this->clientId, $this->groupId, $event['eventKey'], $event['eventKey'], json_encode($event), $e->getCode(), $e->getMessage(), $e->getTraceAsString());
+                    } catch (\Exception $e) {
+                        // 异常格式化信息: consumer_id|group_id|topic_name|exception_code|exception_msg|exception_string
+                        $exceptionFormatStr = "%s %s %s %s '%s' \n %s";
+
+                        $errorMessage = sprintf($exceptionFormatStr, $this->consumerId, $this->groupId, implode('|', $topicList), $e->getCode(), $e->getMessage(), $e->getTraceAsString());
+                        $this->error('failed: ' . $errorMessage);
                     }
                     break;
                 case RD_KAFKA_RESP_ERR__PARTITION_EOF:// 没有消息
-//                    echo "No more messages; will wait for more\n";
+                    //echo "No more messages; will wait for more\n";
                     break;
                 case RD_KAFKA_RESP_ERR__TIMED_OUT:// 超时
-//                    echo "Timed out\n";
+                    //echo "Timed out\n";
                     break;
                 default:
                     throw new \Exception($message->errstr(), $message->err);
