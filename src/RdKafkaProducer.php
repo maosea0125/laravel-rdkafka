@@ -136,7 +136,7 @@ class RdKafkaProducer
         $brokerLists = config('kafka.producer.broker_list');
         $groupId     = config('kafka.producer.group_id');
         $options     = config('kafka.producer.kafka_options');
-        $obj         = new RdKafkaProducerHelper($brokerLists, $groupId, $options);
+        $obj         = new RdKafkaProducer($brokerLists, $groupId, $options);
         return $obj;
     }
 
