@@ -13,8 +13,7 @@ class RdKafkaConsumer extends Command
      *
      * @var string
      */
-    protected $signature = 'rdkafka:consumer 
-                                        {client-id : 消费者id, 在配置文件中唯一}';
+    protected $signature = 'rdkafka:consumer {consumer_id : 消费者id, 在配置文件中唯一}';
 
     /**
      * The console command description.
@@ -27,7 +26,7 @@ class RdKafkaConsumer extends Command
      * 消费者客户端id, 唯一
      * @var string
      */
-    protected $clientId = '';
+    protected $consumerId = '';
 
     /**
      * 当前运行分组id
@@ -69,37 +68,33 @@ class RdKafkaConsumer extends Command
     public function handle()
     {
         // 获取消费者id
-        $clientId = $this->argument('client-id');
-
+        $consumerId = $this->argument('consumer_id');
         // 获取配置
-        $configKey = "kafka.client_list.{$clientId}";
+        $configKey = "kafka.consumer_list.{$consumerId}";
         // 获取指定队列事件列表
         $clientConfig = config($configKey);
         // 检查配置文件
         if ($clientConfig === null) {
-            $this->prettyError("kafka client_list(消费者列表)不存在 ?");
+            $this->prettyError("kafka consumer_list(消费者列表)不存在 ?");
         }
-        $this->clientConfig = $clientConfig;
+        $this->clientConfig    = $clientConfig;
         $this->eventListConfig = $this->clientConfig['event_list'];
-        $this->clientId     = $clientId;
-        $groupId            = $this->clientConfig['group_id'];
-        $this->groupId      = $groupId;
+        $this->consumerId      = $consumerId;
+        $this->groupId      = $this->clientConfig['group_id'];
         $brokerList         = $clientConfig['broker_list'];
         $topicList          = $this->clientConfig['topic_list'];
         $timeoutMs          = $this->clientConfig['timeout_ms'];// 单位毫秒
-        $kafkaOptions       = config('kafka.kafka-options');
+        $kafkaOptions       = $this->clientConfig['kafka_options'];
         // 异常格式化信息
         $exceptionFormatStr = <<<str
-
-
     [data: %s]:
-     client-id: %s
-      group-id; %s
-    topic-name: %s
-    event-name; %s
-     event-raw: %s
-exception-code: %s
- exception-msg: %s
+     consumer id: %s
+      group id; %s
+    topic name: %s
+    event name; %s
+     event raw: %s
+exception code: %s
+ exception msg: %s
 %s
 str;
         $obj        = new \RdKafkaApp\RdKafkaConsumer($brokerList, $topicList, $this->groupId, $kafkaOptions);

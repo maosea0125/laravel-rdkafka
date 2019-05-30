@@ -44,6 +44,7 @@ class RdKafkaSendEvent extends Command
      */
     public function handle()
     {
+        // 录入事件名
         while (true) {
             $eventKey = $this->ask("请输入要发送的事件名");
             if ($eventKey) {
@@ -52,6 +53,7 @@ class RdKafkaSendEvent extends Command
             $this->error("输入的事件名错误");
         }
 
+        // 录入事件的数据
         $eventData = [];
         while (true) {
             $rowFieldName = $this->ask("请输入事件字段名");
@@ -62,6 +64,8 @@ class RdKafkaSendEvent extends Command
                 break;
             }
         }
+
+        // 确认发送事件数据
         $ip = $ip = RdKafkaProducer::getClientIp();
         $event = [
             'id'        => RdKafkaProducer::getEventId($ip),
