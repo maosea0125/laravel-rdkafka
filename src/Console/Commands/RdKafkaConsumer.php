@@ -189,7 +189,7 @@ class RdKafkaConsumer extends Command
      */
     public function eventBroadcast(array $event, $broadcastEventSuffix = null) {
         $eventKey = $event['eventKey'];
-        $broadcastEventSuffix = $broadcastEventSuffix === null ? EventNameDefine::getEventSuccessSuffix() : $broadcastEventSuffix;
+        $broadcastEventSuffix = $broadcastEventSuffix === null ? '_SUCCESS' : $broadcastEventSuffix;
         $broadcastEventSuffixLen = strlen($broadcastEventSuffix);
         $isBroadcastEvent = substr_compare($eventKey, $broadcastEventSuffix, -$broadcastEventSuffixLen) === 0;
         // 如果找到后缀，代表是广播事件
