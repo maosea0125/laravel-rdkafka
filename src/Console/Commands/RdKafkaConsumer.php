@@ -111,7 +111,7 @@ class RdKafkaConsumer extends Command
                     }
 
                     try {
-                        $bool   = $this->executeEvent($event);
+                        $bool = $this->executeEvent($event);
 
                         $this->info('success');
                         // 处理成功
@@ -154,7 +154,7 @@ class RdKafkaConsumer extends Command
         if (!isset($this->eventListConfig[$eventKey])) {
             throw new ConsumerEventConfigNotFoundException(sprintf('kafka consumer not found event(%s) config', $eventKey));
         }
-        $staticFunc = $this->eventListConfig[$eventKey];
+        $staticFunc = $this->eventListConfig[$eventKey]['function'];
         return call_user_func_array($staticFunc, [$event]);
     }
 
@@ -189,6 +189,10 @@ class RdKafkaConsumer extends Command
      */
     public function eventBroadcast(array $event, $broadcastEventSuffix = null) {
         $eventKey = $event['eventKey'];
+        if( !$this->eventListConfig[$eventKey]['is_broadcast'] ){
+            return false;
+        }
+
         $broadcastEventSuffix = $broadcastEventSuffix === null ? '_SUCCESS' : $broadcastEventSuffix;
         $broadcastEventSuffixLen = strlen($broadcastEventSuffix);
         $isBroadcastEvent = substr_compare($eventKey, $broadcastEventSuffix, -$broadcastEventSuffixLen) === 0;
@@ -196,7 +200,7 @@ class RdKafkaConsumer extends Command
         if ($isBroadcastEvent) {
             return false;
         }
-        $successEventKey = EventNameDefine::getSuccessEventName($eventKey);
+        $successEventKey = $eventKey . '_SUCCESS';
         $event['time'] = time();
         // 不是广播事件, 才广播
         RdKafkaProducer::sendEventRaw($successEventKey, $event);

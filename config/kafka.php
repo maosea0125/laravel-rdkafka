@@ -28,7 +28,7 @@ return [
             ],
             'timeout_ms'    => 3000,
             'event_list'    => [
-                // 事件名 => 事件回调函数(必须是静态方法)
+                // 事件名 => ['function' => 事件回调函数(必须是静态方法), 'is_broadcast' => false]
             ],
         ],
     ],
